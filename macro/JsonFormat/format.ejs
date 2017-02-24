@@ -1,0 +1,25 @@
+Include(App.AppPath + "\\macro\\JsonFormat\\json.min.js");
+
+function parse() {
+    var text = App.ActiveDoc.Text;
+    if (App.ActiveDoc.SelText != "") {
+        text = App.ActiveDoc.SelText;
+    }
+    try {
+        text = jsl.format.formatJson(text);
+    } catch (ex) {
+        ShowMsgBox(ex.message, "格式化JSON", 0 | 0x10);
+        return;
+    }
+    if (text == null) {
+        ShowMsgBox("格式化失败，请检查是否有语法错误。", "格式化JSON", 0 | 0x10);
+        return;
+    }
+    if (App.ActiveDoc.SelText != "") {
+        App.ActiveDoc.SelText = text;
+    } else {
+        App.ActiveDoc.Text = text;
+    }
+}(function() {
+    parse();
+})();
